@@ -9,7 +9,7 @@ document.addEventListener("keydown", (event) => {
   if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)) {
     event.preventDefault(); //bruker prefentdefault for å forhindre at piltastene scroller siden
   }
-  const cs = getComputedStyle(block); //henter de faktiske CSS verdiene til blokken for å bruke det til å endre på posisjonen
+  const cs = getComputedStyle(block); //henter de beregnede CSS verdiene til blokken for å bruke det til å endre på posisjonen
   const { style } = block;
   //  trekker fra og legger til 5px på left og top verdiene fra css'en for å flytte den med piltastene
   switch (event.key) {
