@@ -11,33 +11,61 @@ document.addEventListener("keydown", (event) => {
   }
   const cs = getComputedStyle(block); //henter de beregnede CSS verdiene til blokken for å bruke det til å endre på posisjonen
   const { style } = block;
-  //  trekker fra og legger til 5px på left og top verdiene fra css'en for å flytte den med piltastene
+  // hent blokkstørrelse og vindusstørrelse
+  const blockWidth = parseInt(cs.width);
+  const blockHeight = parseInt(cs.height);
+  const windowWidth = window.innerWidth;
+  const windowHeight = window.innerHeight;
+
+  let top = parseInt(cs.top);
+  let left = parseInt(cs.left);
+
+  //  trekker fra og legger til 5px på left og top for å flytte den med piltastene
   switch (event.key) {
     case "ArrowUp":
-      style.top = `${parseInt(cs.top) - modifier}px`;
+      top -= modifier;
       break;
     case "ArrowDown":
-      style.top = `${parseInt(cs.top) + modifier}px`;
+      top += modifier;
       break;
     case "ArrowLeft":
-      style.left = `${parseInt(cs.left) - modifier}px`;
+      left -= modifier;
       break;
     case "ArrowRight":
-      style.left = `${parseInt(cs.left) + modifier}px`;
+      left += modifier;
       break;
   }
+  //sørger for at blokken holder seg innenfor vinduet
+  top = Math.max(0, Math.min(top, windowHeight - blockHeight));
+  left = Math.max(0, Math.min(left, windowWidth - blockWidth));
+
+  style.top = `${top}px`;
+  style.left = `${left}px`;
 });
 
 //event listener for museklikk for å få blokken til å flytte seg der man klikker
 document.addEventListener("click", (event) => {
-	//henter blokken sin bredde og høyde
-	const blockRect = block.getBoundingClientRect();
+  //henter blokken sin bredde og høyde
+  const blockRect = block.getBoundingClientRect();
 
-//henter X og Y posisjonene til museklikket, og lager det i en variabel (minus halve størrelsen på blokken sånn at den lander midt under der man klikker)
-	const newLeft = event.clientX - blockRect.width / 2;
-	const newTop = event.clientY - blockRect.height / 2;
+  //henter X og Y posisjonene til museklikket, og lager det i en variabel (minus halve størrelsen på blokken sånn at den lander midt under der man klikker)
+  const newLeft = event.clientX - blockRect.width / 2;
+  const newTop = event.clientY - blockRect.height / 2;
 
-//modifiserer posisjonene fra CSS'en med de nye verdiene fra museklikket 
-	block.style.left = `${newLeft}px`; 
-	block.style.top = `${newTop}px`;
+  //henter vindustørrelse
+  const windowWidth = window.innerWidth;
+  const windowHeight = window.innerHeight;
+
+  //sørger for at blokken holder seg innenfor vinduet
+  const clampedLeft = Math.max(
+    0,
+    Math.min(newLeft, windowWidth - blockRect.width)
+  );
+  const clampedTop = Math.max(
+    0,
+    Math.min(newTop, windowHeight - blockRect.height)
+  );
+  //modifiserer posisjonene med de nye verdiene fra museklikket
+  block.style.left = `${clampedLeft}px`;
+  block.style.top = `${clampedTop}px`;
 });
