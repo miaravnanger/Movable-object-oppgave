@@ -6,13 +6,17 @@ body{
    width: 100svw;
    height: 100svh;
    overflow: hidden;
+   background-color: bisque;
 }
-
+h1{
+    text-align: center;
+}
 .block{
     position: absolute;
     width: 200px;
     height: 200px;
-    background-color: blue;
+    background-image: url(./images/kushal-mistri-Wu_WCJq1HvY-unsplash.png);
+    background-size: 200px 200px;
     top: 55px;
     left: 55px;
 }
